@@ -1,12 +1,3 @@
-/**
- * delay ms
- */
-const delay = (time) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, time);
-  });
-};
+import { delay } from 'redux-saga/lib';
 
 export default delay;

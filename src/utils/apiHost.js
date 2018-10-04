@@ -1,4 +1,4 @@
-import { apiHost } from '../config';
+import { getApiHost } from '../config';
 
 let _host = null;
 
@@ -8,6 +8,7 @@ export default () => {
   }
 
   try {
+    const apiHost = getApiHost();
     if (apiHost) {
       _host = apiHost;
       return _host;

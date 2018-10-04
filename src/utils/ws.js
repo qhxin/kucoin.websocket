@@ -30,7 +30,6 @@ let _init = false;
 
 // dispatch subscribe and unsubscribe
 // 告诉业务模型订阅和取消订阅的时机
-export const WS_DISPATCH = 'wsDispatch';
 
 // effects
 export const EFFECT_RESTART = 'ws/wsRestart';
@@ -41,7 +40,6 @@ export const effectUnsubscribed = topic => `ws/wsUnSubscribed@${topic}@end`;
 export const effectSubscribed = topic => `ws/wsSubscribed@${topic}@end`;
 export const subscribedReducerName = reducerName => `${reducerName}@wsSubscribed`;
 export const unsubscribedReducerName = reducerName => `${reducerName}@wsUnSubscribed`;
-export const getDispatchReducerName = reducerName => `${WS_DISPATCH}_${reducerName}`;
 
 // 获取服务器地址和bulletToken
 // 后续访问即时消息服务器或历史消息服务器时，需要使用这里返回的地址和bulletToken

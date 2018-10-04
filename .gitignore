@@ -4,12 +4,12 @@
 /node_modules
 
 # production
-# /lib
+/lib
 
 # misc
 .DS_Store
 npm-debug.log*
-
+dist/
 .vscode/
 .idea/
 package-lock.json

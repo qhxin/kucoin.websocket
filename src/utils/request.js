@@ -3,10 +3,6 @@ import fetch from 'isomorphic-fetch';
 import apiHost from './apiHost';
 import { formlize } from '../helper';
 
-// open 请求不传c
-const openReg = /^(\/v1(\/account|\/user|\/api|\/market)?\/open)/;
-
-let csrf = ''; // csrf id
 const host = apiHost();
 
 function checkStatus(response) {
@@ -32,14 +28,6 @@ function checkError(json) {
 
 function isDefaultHost(url) {
   return url.indexOf('/') === 0 && url.indexOf('//') !== 0;
-}
-
-function isAPI(url) {
-  return isDefaultHost(url);
-}
-
-export function setCsrf(value = '') {
-  csrf = value;
 }
 
 /**
@@ -71,11 +59,6 @@ export default function request(url, options = {}) {
  * @return {object} An object containing either "data" or "err"
  */
 export function pull(url, query = {}) {
-  if (isAPI(url)) {
-    if (!openReg.test(url)) {
-      query.c = csrf;
-    }
-  }
   let queryStr = qs.stringify(query) || '';
   if (queryStr) {
     if (url.indexOf('?') === -1) {
@@ -98,20 +81,7 @@ export function pull(url, query = {}) {
  * @return {object} An object containing either "data" or "err"
  */
 export function post(url, data = {}) {
-  let queryStr = '';
-  if (isAPI(url)) {
-    const query = {};
-    if (!openReg.test(url)) {
-      query.c = csrf;
-    }
-    queryStr = qs.stringify(query);
-    if (url.indexOf('?') === -1) {
-      queryStr = `?${queryStr}`;
-    } else {
-      queryStr = `&${queryStr}`;
-    }
-  }
-  return request(`${url}${queryStr}`, {
+  return request(`${url}`, {
     method: 'POST',
     body: formlize(data),
   });
@@ -125,11 +95,6 @@ export function post(url, data = {}) {
  * @return {object} An object containing either "data" or "err"
  */
 export function del(url, query = {}) {
-  if (isAPI(url)) {
-    if (!openReg.test(url)) {
-      query.c = csrf;
-    }
-  }
   let queryStr = qs.stringify(query) || '';
   if (queryStr) {
     if (url.indexOf('?') === -1) {

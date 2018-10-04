@@ -1,0 +1,33 @@
+{
+  "name": "kucoin.websocket",
+  "version": "0.1.0",
+  "description": "kucoin websocket api utils",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/babel src -d lib",
+    "lint": "./node_modules/.bin/eslint --ext .js src test",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0"
+  },
+  "dependencies": {
+    "decimal.js": "^10.0.1",
+    "es6-promise": "^4.2.5",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.11",
+    "moment": "^2.22.2",
+    "socket.io": "^2.1.1"
+  }
+}

@@ -83,16 +83,6 @@ export default extend(base, polling, wsTradeReducer, {
         payload: { coinPair, type: 'buy', orders: buyDatas.data },
       });
     },
-    *setGroup({ type, payload: { coinPair, group } }, { select, put }) {
-      const _namespace = type.split('/')[0];
-
-      let { groupMap } = yield select(state => state.openOrders);
-      groupMap = { ...groupMap, [coinPair]: group };
-
-      yield put({ type: 'update', payload: { groupMap } });
-
-      adjustmentManager.clear(_namespace);
-    },
     *wsTradeFinalReducer(dispatchAction, { put, select }) {
       const { payload, params } = dispatchAction;
       const _namespace = dispatchAction.type.split('/')[0];

@@ -6,13 +6,7 @@ import sort from './common/sort';
 import filter from './common/filter';
 import polling from './common/polling';
 import wsMarketReducer from './ws/wsMarketReducer';
-import {
-  getCoins,
-  getUserStickSymbols,
-  getUserFavSymbols,
-  userFavSymbols,
-  userStickSymbols,
-} from '../services/market';
+import { getCoins } from '../services/market';
 import { getMarketAreas } from '../services/open';
 
 export default extend(base, sort, filter, polling, wsMarketReducer, {
@@ -22,11 +16,7 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
       area: '',
     },
     areas: [],
-    records: [],
-    homeRecords: [], // deprecated
     symbolsMap: {},
-    stickSymbols: [],
-    favSymbols: [],
     coinPairMap: {},
   },
   reducers: {
@@ -70,14 +60,6 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
       }
     },
 
-    // 此方法只取全部交易对，records 只装全部交易对
-    *pull({ payload = {} }, { call, put }) {
-      const { data } = yield call(getCoins, '');
-      const records = data.filter(item => !!item);
-
-      yield put({ type: 'update', payload: { records } });
-    },
-
     *pullAreaSymbols({ payload: { area } }, { call, put }) {
       const { data } = yield call(getCoins, area);
       const records = data.filter(item => item && item.trading);
@@ -102,23 +84,10 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
       }
     },
 
-    *pullHome({ payload = {} }, { call, put }) {
-      const { data } = yield call(getCoins, 'BTC');
-
-      const enabledRecords = data.filter(item => item && item.trading);
-      const homeRecords = enabledRecords.filter((item, index) => index < 12);
-
-      yield put({
-        type: 'update',
-        payload: { homeRecords },
-      });
-    },
-
     *wsMarketFinalReducer({ payload: { area, records } }, { put, select }) {
       const dataLength = records.length;
-      const [symbolsMap, fullRecords] = yield select(state => [
+      const [symbolsMap] = yield select(state => [
         state.market.symbolsMap,
-        state.market.records,
       ]);
 
       if (!dataLength) {
@@ -127,7 +96,6 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
 
       const markets = symbolsMap[area] || [];
       const marketsLength = markets.length;
-      const fullRecordsLen = fullRecords.length;
 
       for (let i = 0; i < dataLength; i++) {
         const data = records[i];
@@ -138,17 +106,6 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
           if (symbol === data.symbol) {
             markets[j] = {
               ...markets[j],
-              ...data,
-            };
-            break;
-          }
-        }
-
-        for (let j = 0; j < fullRecordsLen; j++) {
-          const { symbol } = fullRecords[j];
-          if (symbol === data.symbol) {
-            fullRecords[j] = {
-              ...fullRecords[j],
               ...data,
             };
             break;
@@ -166,53 +123,6 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
           ],
         },
       });
-
-      // 更新所有的列表
-      yield put({ type: 'update', payload: { records: fullRecords } });
-    },
-
-    *pullUserStickSymbols({ payload = {} }, { call, put }) {
-      const { data } = yield call(getUserStickSymbols);
-      if (data) {
-        yield put({
-          type: 'update',
-          payload: { stickSymbols: data },
-        });
-      }
-    },
-
-    *pullUserFavSymbols({ payload = {} }, { call, put }) {
-      const { data } = yield call(getUserFavSymbols);
-      if (data) {
-        yield put({
-          type: 'update',
-          payload: { favSymbols: data },
-        });
-      }
-    },
-
-    *userFavSymbols({ payload: { symbol, fav } }, { call, put }) {
-      yield call(userFavSymbols, { symbol, fav });
-      yield put({
-        type: 'pullUserFavSymbols',
-      });
-    },
-
-    *userStickSymbols({ payload: { symbol, stick } }, { call, put }) {
-      yield call(userStickSymbols, { symbol, stick });
-      yield put({
-        type: 'pullUserStickSymbols',
-      });
-    },
-
-    *clearSelfSymbols({ payload }, { put }) {
-      yield put({
-        type: 'update',
-        payload: {
-          favSymbols: [],
-          stickSymbols: [],
-        },
-      });
     },
   },
   subscriptions: {
@@ -225,9 +135,7 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
         type: 'watchPolling',
         payload: { effect: 'pullAreas', interval: 10 * 60 * 1000 },
       });
-      dispatch({ type: 'watchPolling', payload: { effect: 'pull', interval: 40 * 1000 } });
       dispatch({ type: 'watchPolling', payload: { effect: 'filter' } });
-      dispatch({ type: 'watchPolling', payload: { effect: 'pullHome' } });
 
       dispatch({ type: 'pullAreas' });
     },

@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 /**
  * 基类模型
  */
@@ -19,17 +17,9 @@ export default {
   },
   effects: {
     // 重置模型数据，如果没有 payload，重置为初始值
-    *reset({ type, payload }, { select, put }) {
-      const namespace = type.split('/')[0];
-      const initValue = yield select(state => state.initValues[namespace]);
-
+    *reset({ payload }, { put }) {
       if (typeof payload === 'undefined') {
-        yield put({ type: '_reset', payload: initValue });
-        return;
-      }
-
-      if (_.isPlainObject(payload) && _.isPlainObject(initValue)) {
-        yield put({ type: '_reset', payload: { ...initValue, ...payload } });
+        yield put({ type: '_reset', payload: {} });
         return;
       }
 

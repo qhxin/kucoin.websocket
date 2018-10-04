@@ -6,14 +6,19 @@ import wsTradeHistoryReducer from './ws/wsTradeHistoryReducer';
 import { adjustmentManager } from './ws/handler';
 import { getDealOrders } from '../services/market';
 
+// current limit
+let _limit = 50;
+
 export default extend(base, polling, wsTradeHistoryReducer, {
   namespace: 'dealOrders',
   state: {},
   reducers: {},
   effects: {
+    // pull dealOrders by http limit
     *pull({ type, payload: { coinPair, limit, since } }, { call, put }) {
       const _namespace = type.split('/')[0];
       const { data } = yield call(getDealOrders, coinPair, limit, since);
+      _limit = limit;
 
       adjustmentManager.passPull(_namespace);
 
@@ -38,17 +43,13 @@ export default extend(base, polling, wsTradeHistoryReducer, {
       const limitSeq = adjustmentManager.passWs(_namespace);
 
       const { symbol } = params;
-      const [pathname, oldList] = yield select((state) => {
+      const [oldList] = yield select((state) => {
         return [
-          state.routing.location.pathname,
           state.dealOrders[symbol],
         ];
       });
 
-      let limit = 31;
-      if (pathname.indexOf('/trade.pro/') === 0) {
-        limit = 50;
-      }
+      const limit = _limit;
 
       const list = payload
         .filter(({ seq }) => {

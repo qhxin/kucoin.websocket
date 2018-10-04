@@ -1,4 +1,4 @@
-import { pull, post } from '../utils/request';
+import { pull } from '../utils/request';
 
 /**
  * 获取货币对的挂单记录
@@ -113,38 +113,4 @@ export async function getDealtRank(symbol, since, before) {
     since,
     before,
   });
-}
-
-/**
- * 获取用户置顶交易对列表
- */
-export async function getUserStickSymbols() {
-  return pull('/v1/market/stick-symbols');
-}
-
-/**
- * 获取用户自选交易对列表
- */
-export async function getUserFavSymbols() {
-  return pull('/v1/market/fav-symbols');
-}
-
-/**
- * 设置或取消用户自选交易对列表
- * @param symbol string 交易对
- * @param fav bool
- */
-export async function userFavSymbols({ symbol, fav }) {
-  fav = fav ? 1 : 0;
-  return post(`/v1/market/symbol/fav?symbol=${symbol || ''}`, { fav });
-}
-
-/**
- * 设置或取消用户置顶交易对列表
- * @param symbol string 交易对
- * @param stick bool
- */
-export async function userStickSymbols({ symbol, stick }) {
-  stick = stick ? 1 : 0;
-  return post(`/v1/market/symbol/stick?symbol=${symbol || ''}`, { stick });
 }

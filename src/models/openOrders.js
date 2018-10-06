@@ -19,22 +19,19 @@ export default extend(base, polling, wsTradeReducer, {
   reducers: {
     updateOrders(state, { payload: { coinPair, type, orders } }) {
       const data = type === 'sell' ? orders.reverse() : orders;
-      let bigger = null;
 
       return {
         ...state,
         [coinPair]: {
           ...state[coinPair],
           [type]: data.map((item) => {
-            bigger = {
+            return {
               type,
-              bigger,
               key: `${type}_${item[0]}`,
               price: item[0],
               amount: item[1],
               volValue: item[2],
             };
-            return bigger;
           }),
         },
       };

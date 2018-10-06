@@ -57,6 +57,30 @@ export default extend(base, {
               },
             });
             yield take(effectSubscribed(topic));
+            console.log('[app] subscribe end.', topic);
+
+            if (topicKey === 'TRADE') {
+              yield put({
+                type: 'openOrders/pull@polling',
+                payload: { coinPair: params.symbol },
+              });
+              console.log('[app] polling openOrders/pull end.');
+            } else
+            if (topicKey === 'TRADE_HISTORY') {
+              yield put({
+                type: 'dealOrders/pull@polling',
+                payload: { coinPair: params.symbol, limit: 50 },
+              });
+              console.log('[app] polling dealOrders/pull end.');
+            } else
+            if (topicKey === 'MARKET') {
+              yield put({ type: 'market/filter@polling', payload: { area: params.area } });
+              console.log('[app] polling market/filter end.');
+            } else
+            if (topicKey === 'MARKET_TICK') {
+              yield put({ type: 'ticks/pull', payload: { coinPair: params.symbol } });
+              console.log('[app] polling ticks/pull end.');
+            }
 
             // next cfg topic
             find = true;
@@ -68,6 +92,8 @@ export default extend(base, {
           console.log('[app] can\'t match topic: ', subTopic);
         }
       }
+
+      console.log('[app] run end.');
     },
   },
   subscriptions: {

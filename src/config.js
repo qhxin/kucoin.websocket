@@ -10,7 +10,7 @@ let _wsMessageInterval = 300;
 // topic template is in models/ws/topics.js
 let _wsSubTopics = [
   '/market/BTC',
-  '/market/USDT',
+  '/market/KCS-BTC_TICK',
   '/trade/KCS-BTC_TRADE',
   '/trade/KCS-BTC_HISTORY',
 ];

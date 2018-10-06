@@ -20,6 +20,7 @@ export default function (opts = {}) {
   app.model(require('./models/dealOrders'));
   app.model(require('./models/market'));
   app.model(require('./models/openOrders'));
+  app.model(require('./models/ticks'));
   app.model(require('./models/app'));
   app.model(require('./models/ws/wsListener'));
 

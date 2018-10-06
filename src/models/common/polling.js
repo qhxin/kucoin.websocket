@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import * as delaySaga from '../../utils/delay';
+import delaySaga from '../../utils/delay';
 import { genCompare } from '../utils/modelHelper';
 
 

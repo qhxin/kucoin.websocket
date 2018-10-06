@@ -31,11 +31,11 @@ async function demoCycleProcess() {
   while (true) {
     const ts = Date.now();
     const state = app._store.getState();
-    console.log('ts', ts, {
+    console.log('ts', ts, JSON.stringify({
       dealOrders: state.dealOrders,
-      market: state.market,
+      market_KCS_BTC: state.market.coinPairMap['KCS-BTC'],
       openOrders: state.openOrders,
-    });
+    }));
 
     await delay(10000);
   }

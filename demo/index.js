@@ -1,6 +1,9 @@
 /**
  * nodejs runtime demo
  */
+// -> using npm package
+// import kucoinWs from 'kucoin.websocket';
+// -> using demo
 import kucoinWs from '../lib/index';
 import delay from '../lib/utils/delay';
 

@@ -22,7 +22,7 @@ const modelRegister = _registerMap();
 // userLogin 后获取连接 token
 let _bulletToken = null;
 
-// resource is web or h5, default api
+// resource is web or h5, default web
 let _resource = RESOURCE_WEB;
 
 // socket instance

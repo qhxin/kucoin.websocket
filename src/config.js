@@ -1,6 +1,5 @@
 
 // api host
-// let _apiHost = 'api.kucoin.com'; // 'kitchen.kucoin.com';
 let _apiHost = 'kitchen.kucoin.com';
 
 // ws message cycle interval (ms)

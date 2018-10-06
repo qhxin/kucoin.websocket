@@ -16,7 +16,7 @@ const _unsubscribedReducerName = unsubscribedReducerName(reducerName);
 
 export default extend(ws, {
   effects: {
-    *[reducerName]({ type, payload, params, pathname }, { put }) {
+    *[reducerName]({ type, payload, params }, { put }) {
       const messages = payload; // wsListener缓存多次message的消息后分发，因此这里需要处理消息数组
 
       // messages中先到的消息在前
@@ -34,11 +34,10 @@ export default extend(ws, {
           return true;
         });
 
-      const finalReducerType = type.replace(reducerName, reducerFinalName);
+      // const finalReducerType = type.replace(reducerName, reducerFinalName);
       yield put({
         params,
-        pathname,
-        type: finalReducerType,
+        type: reducerFinalName,
         payload: records,
       });
     },

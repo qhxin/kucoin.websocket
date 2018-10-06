@@ -45,7 +45,7 @@ export default function request(url, options = {}) {
     ...options.headers,
   };
 
-  return fetch(isDefaultHost(url) ? `//${host}${url}` : url, options)
+  return fetch(isDefaultHost(url) ? `https://${host}${url}` : url, options)
     .then(checkStatus)
     .then(parseJSON)
     .then(checkError);

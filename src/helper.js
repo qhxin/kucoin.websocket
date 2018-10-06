@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 import Decimal from 'decimal.js/decimal';
-
-const FormData = window.FormData;
+import FormData from 'form-data';
 
 /**
  * 高精度计算库
@@ -297,4 +296,10 @@ export const padString = (str, pad = '*') => {
     return '';
   }
   return (`${str}`).replace(/./g, pad);
+};
+
+export const templateToRouter = (str) => {
+  return str
+    .replace(/\{/g, ':')
+    .replace(/\}/g, '(.[A-Z\\-]+)');
 };

@@ -15,6 +15,14 @@ export default function (opts = {}) {
   const app = core.create(opts, createOpts);
   const oldAppStart = app.start;
   app.start = start;
+
+  app.model(require('./models/categories'));
+  app.model(require('./models/dealOrders'));
+  app.model(require('./models/market'));
+  app.model(require('./models/openOrders'));
+  app.model(require('./models/app'));
+  app.model(require('./models/ws/wsListener'));
+
   return app;
 
   function start() {

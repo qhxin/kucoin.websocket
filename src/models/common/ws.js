@@ -24,7 +24,7 @@ export default extend(base, {
   effects: {
     // 订阅通道
     *_wsSubscribe({ payload }, { put, take, race, call }) {
-      const { topic, messageHandler, params, pathname } = payload;
+      const { topic, messageHandler, params } = payload;
       if (!topic) {
         throw new Error('Invalid Topic');
       }
@@ -41,7 +41,7 @@ export default extend(base, {
           _subscribed[topic] = true;
           yield subscribeHandler(socket, topic);
 
-          messageListener.subscribeDispatch(topic, { messageHandler, params, pathname });
+          messageListener.subscribeDispatch(topic, { messageHandler, params });
           console.log('subscribe', topic);
 
           const models = modelRegister.getModels(messageHandler);

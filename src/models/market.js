@@ -52,8 +52,10 @@ export default extend(base, sort, filter, polling, wsMarketReducer, {
   effects: {
     *pullAreas({ payload = {} }, { call, put }) {
       try {
+        console.log('[market] loading area...');
         const { data } = yield call(getMarketAreas);
         yield put({ type: 'updateAreas', payload: data });
+        console.log('[market] area loaded: ', data);
       } catch (e) {
         yield call(delay, 3000);
         yield put({ type: 'pullAreas' });

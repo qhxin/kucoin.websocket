@@ -97,7 +97,7 @@ export default extend(wsInterface, {
         const messagesArr = messageListener.takeMessages();
         for (let i = messagesArr.length - 1; i >= 0; i--) {
           const [topic, subscribe, messages] = messagesArr[i];
-          const { messageHandler, params, pathname } = subscribe;
+          const { messageHandler, params } = subscribe;
 
           const models = modelRegister.getModels(messageHandler);
 
@@ -106,7 +106,6 @@ export default extend(wsInterface, {
             yield put({
               type: `${models[j]}/${messageHandler}`,
               payload: messages,
-              pathname,
               topic,
               params,
             });

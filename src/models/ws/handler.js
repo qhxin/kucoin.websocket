@@ -8,14 +8,20 @@ let _seq = 0;
 // 连接建立
 const connectHandler = (socket) => {
   return new Promise((resolve) => {
-    socket.on('connect', () => resolve());
+    socket.on('connect', () => {
+      console.log('[ws handler] ws connected.');
+      resolve();
+    });
   });
 };
 
 // 重连
 const reconnectHandler = (socket) => {
   return new Promise((resolve) => {
-    socket.on('reconnect', () => resolve());
+    socket.on('reconnect', () => {
+      console.log('[ws handler] ws reconnected.');
+      resolve();
+    });
   });
 };
 
@@ -34,8 +40,10 @@ const subscribeHandler = (socket, topic) => {
   return new Promise((resolve, reject) => {
     if (!socket.connected) {
       reject('socket has not connected');
+      console.log('[ws handler] ws subscribe rejected. socket has not connected.');
     } else {
       socket.emit('subscribe', topic, (result) => {
+        console.log('[ws handler] ws subscribe ack.');
         resolve(result);
       });
     }
@@ -47,8 +55,10 @@ const unSubscribeHandler = (socket, topic) => {
   return new Promise((resolve, reject) => {
     if (!socket.connected) {
       reject('socket has not connected');
+      console.log('[ws handler] ws unsubscribe rejected. socket has not connected.');
     } else {
       socket.emit('unsubscribe', topic, (result) => {
+        console.log('[ws handler] ws unsubscribe ack.');
         resolve(result);
       });
     }

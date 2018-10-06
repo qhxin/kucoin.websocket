@@ -49,10 +49,10 @@ export default extend(ws, {
         records.push({ seq, data: record });
       }
 
-      const finalReducerType = type.replace(reducerName, reducerFinalName);
+      // const finalReducerType = type.replace(reducerName, reducerFinalName);
       yield put({
         params,
-        type: finalReducerType,
+        type: reducerFinalName,
         payload: records,
       });
     },

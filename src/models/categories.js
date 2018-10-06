@@ -1,4 +1,4 @@
-import { delay } from 'dva/saga';
+import delay from '../utils/delay';
 import extend from 'dva-model-extend';
 import { maxPrecision } from '../config';
 import base from './common/base';
@@ -26,6 +26,7 @@ export default extend(base, {
   effects: {
     *pull({ payload = {} }, { call, put }) {
       try {
+        console.log('[categories] loading map...');
         const { data } = yield call(getCoinsCategory);
         const map = {};
 
@@ -42,6 +43,7 @@ export default extend(base, {
         });
 
         yield put({ type: 'reset', payload: map });
+        console.log('[categories] map loaded');
       } catch (e) {
         yield call(delay, 3000);
         yield put({ type: 'pull' });

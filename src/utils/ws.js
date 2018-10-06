@@ -7,6 +7,7 @@ import { pull } from './request';
 // resource code to export
 export const RESOURCE_H5 = 'h5';
 export const RESOURCE_WEB = 'web';
+export const RESOURCE_API = 'api';
 
 // init server list manager
 const _instanceServers = _initServers();
@@ -21,7 +22,7 @@ const modelRegister = _registerMap();
 // userLogin 后获取连接 token
 let _bulletToken = null;
 
-// resource is web or h5, default web
+// resource is web or h5, default api
 let _resource = RESOURCE_WEB;
 
 // socket instance
@@ -58,6 +59,8 @@ async function userLogin() {
     _bulletToken = bulletToken;
     _instanceServers.set(instanceServers);
     _historyServers.set(historyServers);
+
+    console.log('[ws entry] login bullet success.');
   } catch (e) {
     console.error(e);
     // 发生错误重新获取
@@ -79,6 +82,7 @@ async function initIO() {
     if (!_resource || !endpoint || !_bulletToken) {
       throw new Error('Invalid WebSocket Args');
     }
+    console.log('[ws entry] choose server: ', server);
     return {
       endpoint,
       resource: _resource,
@@ -88,6 +92,7 @@ async function initIO() {
 
   try {
     const { endpoint, resource, bulletToken } = await preprocess();
+    console.log('[ws entry] init io.');
     /*
       options (Object)
         path (String) name of the path that is captured on the server side (/socket.io)
@@ -110,6 +115,7 @@ async function initIO() {
     return io(`${endpoint}?bulletToken=${encodeURIComponent(bulletToken)}&format=json&resource=${resource}`, {
       reconnectionDelay: 3000,
       forceNew: true,
+      transports: ['websocket'],
     });
   } catch (e) {
     console.error(e);
@@ -247,6 +253,14 @@ function checkError(result) {
   return result;
 }
 
+/**
+ * 统一最终数据到达的model接口名
+ * @param {*} reducerName
+ */
+function finalReducerName(reducerName) {
+  return reducerName.replace(/^(.+)Reducer$/, '$1FinalReducer');
+}
+
 // 解析路由
 // 匹配返回变量map
 // 不匹配返回false
@@ -280,5 +294,6 @@ export {
   ws,
   setResource,
   checkError,
+  finalReducerName,
   modelRegister,
 };

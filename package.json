@@ -2,6 +2,14 @@
   "name": "kucoin.websocket",
   "version": "0.1.0",
   "description": "kucoin websocket api utils",
+  "keywords": [
+    "crypto-exchanges-gateway",
+    "exchanges",
+    "cryptocurrency",
+    "kucoin",
+    "websocket",
+    "api"
+  ],
   "main": "lib/index.js",
   "files": [
     "lib"

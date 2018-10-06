@@ -15,6 +15,12 @@ let _wsSubTopics = [
   '/trade/KCS-BTC_HISTORY',
 ];
 
+// fetch openOrders limit
+let _openOrdersLimit = 100;
+
+// fetch dealOrders limit
+let _dealOrdersLimit = 50;
+
 //--------------------------------------------------------------
 export const setApiHost = (host) => {
   _apiHost = host;
@@ -31,5 +37,12 @@ export const setWsSubTopics = (arr) => {
 };
 export const getWsSubTopics = () => _wsSubTopics;
 
-export {
+export const setOpenOrdersLimit = (num) => {
+  _openOrdersLimit = num;
 };
+export const getOpenOrdersLimit = () => _openOrdersLimit;
+
+export const setDealOrdersLimit = (num) => {
+  _dealOrdersLimit = num;
+};
+export const getDealOrdersLimit = () => _dealOrdersLimit;

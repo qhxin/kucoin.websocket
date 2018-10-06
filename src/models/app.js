@@ -8,7 +8,14 @@ import {
 } from '../utils/ws';
 import topicMap from './ws/topics';
 import { templateToRouter } from '../helper';
-import { getWsSubTopics } from '../config';
+import {
+  getWsSubTopics,
+  getOpenOrdersLimit,
+  getDealOrdersLimit,
+} from '../config';
+
+const openOrdersLimit = getOpenOrdersLimit();
+const dealOrdersLimit = getDealOrdersLimit();
 
 /**
  * 订阅默认通道
@@ -62,14 +69,14 @@ export default extend(base, {
             if (topicKey === 'TRADE') {
               yield put({
                 type: 'openOrders/pull@polling',
-                payload: { coinPair: params.symbol },
+                payload: { coinPair: params.symbol, limit: openOrdersLimit },
               });
               console.log('[app] polling openOrders/pull end.');
             } else
             if (topicKey === 'TRADE_HISTORY') {
               yield put({
                 type: 'dealOrders/pull@polling',
-                payload: { coinPair: params.symbol, limit: 50 },
+                payload: { coinPair: params.symbol, limit: dealOrdersLimit },
               });
               console.log('[app] polling dealOrders/pull end.');
             } else

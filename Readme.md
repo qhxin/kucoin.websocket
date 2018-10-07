@@ -8,6 +8,22 @@ Npm: `npm install --save kucoin.websocket`
 
 Or you can clone the codes from git and direct import to your demo.
 
+## Usage
+
+```
+// import from package
+import kucoinWs from 'kucoin.websocket';
+
+// initialize
+const app = kucoinWs();
+
+// start
+app.start();
+
+// use state
+const state = app._store.getState();
+```
+
 ## Runtime
 
 This Lib using dva-core and it provides a Redux Store to outside programs, no UI or Browser specific codes, so it can work on Node.js and Browsers. If you know how to use dva model and even redux-saga, it's better for you to fork and change models for yourself.
@@ -35,6 +51,22 @@ Change demo codes then `npm run demo`. Or write your codes and rebuild.
 Npm: `npm install --save kucoin.websocket`
 
 你也可以从 git 上克隆代码到你的项目里直接引用。使用方式参考demo。
+
+## 使用
+
+```
+// import from package
+import kucoinWs from 'kucoin.websocket';
+
+// initialize
+const app = kucoinWs();
+
+// start
+app.start();
+
+// use state
+const state = app._store.getState();
+```
 
 ## 运行环境
 
